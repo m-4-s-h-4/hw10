@@ -25,6 +25,7 @@ class UnsplashApiProvider {
 
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create<UnsplashApi>()
