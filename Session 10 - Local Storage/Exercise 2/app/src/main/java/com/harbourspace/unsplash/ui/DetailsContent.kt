@@ -110,10 +110,10 @@ fun DetailsContent(
                 Column(
                     modifier = Modifier.weight(1.0f)
                 ) {
-//                    AddImageInformation(
-//                        title = stringResource(id = R.string.details_iso_title),
-//                        subtitle = photoDetails?.exif?.iso
-//                    )
+                    AddImageInformation(
+                        title = stringResource(id = R.string.details_iso_title),
+                        subtitle = "-"
+                    )
                 }
 
                 Column(
