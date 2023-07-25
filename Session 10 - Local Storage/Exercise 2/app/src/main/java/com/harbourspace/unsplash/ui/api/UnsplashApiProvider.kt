@@ -1,9 +1,9 @@
 package com.harbourspace.unsplash.ui.api
 
-import android.util.Log
 import com.harbourspace.unsplash.ui.data.UnsplashCollection
 import com.harbourspace.unsplash.ui.data.UnsplashItem
 import com.harbourspace.unsplash.ui.data.UnsplashSearch
+import com.harbourspace.unsplash.ui.data.UnsplashPhotoDetails
 import com.harbourspace.unsplash.ui.data.cb.UnsplashResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -55,7 +55,10 @@ class UnsplashApiProvider {
 
     fun searchImages(keyword: String, cb: UnsplashResult) {
         retrofit.searchPhotos(keyword).enqueue(object : Callback<UnsplashSearch> {
-            override fun onResponse(call: Call<UnsplashSearch>, response: Response<UnsplashSearch>) {
+            override fun onResponse(
+                call: Call<UnsplashSearch>,
+                response: Response<UnsplashSearch>
+            ) {
                 if (response.isSuccessful && response.body() != null) {
                     cb.onDataFetchedSuccess(response.body()!!.results)
                 } else {
@@ -71,7 +74,10 @@ class UnsplashApiProvider {
 
     fun fetchCollections(cb: UnsplashResult) {
         retrofit.fetchCollections().enqueue(object : Callback<List<UnsplashCollection>> {
-            override fun onResponse(call: Call<List<UnsplashCollection>>, response: Response<List<UnsplashCollection>>) {
+            override fun onResponse(
+                call: Call<List<UnsplashCollection>>,
+                response: Response<List<UnsplashCollection>>
+            ) {
                 if (response.isSuccessful && response.body() != null) {
                     cb.onCollectionsFetchedSuccess(response.body()!!)
                 } else {
@@ -80,6 +86,25 @@ class UnsplashApiProvider {
             }
 
             override fun onFailure(call: Call<List<UnsplashCollection>>, t: Throwable) {
+                cb.onDataFetchedFailed()
+            }
+        })
+    }
+
+    fun getPhotoDetails(id: String, cb: UnsplashResult) {
+        retrofit.getPhotoDetails(id).enqueue(object : Callback<UnsplashPhotoDetails> {
+            override fun onResponse(
+                call: Call<UnsplashPhotoDetails>,
+                response: Response<UnsplashPhotoDetails>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
+                    cb.onPhotoDetailsFetchedSuccess(response.body()!!)
+                } else {
+                    cb.onDataFetchedFailed()
+                }
+            }
+
+            override fun onFailure(call: Call<UnsplashPhotoDetails>, t: Throwable) {
                 cb.onDataFetchedFailed()
             }
         })

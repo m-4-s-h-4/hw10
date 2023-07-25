@@ -36,5 +36,6 @@ data class UnsplashItem(
 
     @field:TypeConverters(UserConverter::class)
     val user: User,
-    val width: Int
+    val width: Int,
+
 ) : Parcelable

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.harbourspace.unsplash.ui.api.UnsplashApiProvider
 import com.harbourspace.unsplash.ui.data.UnsplashCollection
 import com.harbourspace.unsplash.ui.data.UnsplashItem
+import com.harbourspace.unsplash.ui.data.UnsplashPhotoDetails
 import com.harbourspace.unsplash.ui.data.cb.UnsplashResult
 import com.harbourspace.unsplash.ui.repository.UnsplashRepository
 
@@ -71,6 +72,11 @@ class UnsplashViewModel(
         provider.fetchCollections(this)
     }
 
+    fun getPhotoDetails(id:String) {
+        provider.getPhotoDetails(id,this)
+    }
+
+
     override fun onDataFetchedSuccess(images: List<UnsplashItem>) {
         Log.d(TAG, "onDataFetchedSuccess | Received ${images.size} images")
 
@@ -91,4 +97,17 @@ class UnsplashViewModel(
         Log.e(TAG, "onDataFetchedFailed | Unable to retrieve images")
         _loading.value = false
     }
+
+    private val _photoDetails = MutableLiveData<UnsplashPhotoDetails>()
+    val photoDetails: LiveData<UnsplashPhotoDetails> = _photoDetails
+
+//    override fun onPhotoDetailsFetchedSuccess(photoDetails: UnsplashPhotoDetails) {
+//        Log.d(TAG, "onPhotoDetailsFetchedSuccess | Received photo details")
+//        _photoDetails.value = photoDetails
+//    }
+
+    override fun onPhotoDetailsFetchedSuccess(photoDetails: UnsplashPhotoDetails) {
+        _photoDetails.value = photoDetails
+    }
+
 }

@@ -21,10 +21,12 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.harbourspace.unsplash.R
 import com.harbourspace.unsplash.ui.data.UnsplashItem
+import com.harbourspace.unsplash.ui.data.UnsplashPhotoDetails
 
 @Composable
 fun DetailsContent(
-    image: UnsplashItem
+    image: UnsplashItem,
+    photoDetails: UnsplashPhotoDetails?
 ) {
     LazyColumn {
         item {
@@ -51,19 +53,24 @@ fun DetailsContent(
                 Column(
                     modifier = Modifier.weight(1.0f)
                 ) {
-                    AddImageInformation(
-                        title = stringResource(id = R.string.details_camera_title),
-                        subtitle = stringResource(id = R.string.details_camera_default)
-                    )
+                    photoDetails?.exif?.make?.let {
+                        AddImageInformation(
+                            title = stringResource(id = R.string.details_camera_title),
+                            subtitle = it
+                        )
+                    }
+
                 }
 
                 Column(
                     modifier = Modifier.weight(1.0f)
                 ) {
-                    AddImageInformation(
-                        title = stringResource(id = R.string.details_aperture_title),
-                        subtitle = stringResource(id = R.string.details_aperture_default)
-                    )
+                    photoDetails?.exif?.aperture?.let {
+                        AddImageInformation(
+                            title = stringResource(id = R.string.details_aperture_title),
+                            subtitle = it
+                        )
+                    }
                 }
             }
         }
@@ -75,19 +82,23 @@ fun DetailsContent(
                 Column(
                     modifier = Modifier.weight(1.0f)
                 ) {
-                    AddImageInformation(
-                        title = stringResource(id = R.string.details_focal_title),
-                        subtitle = stringResource(id = R.string.details_focal_default)
-                    )
+                    photoDetails?.exif?.focal_length?.let {
+                        AddImageInformation(
+                            title = stringResource(id = R.string.details_focal_title),
+                            subtitle = it
+                        )
+                    }
                 }
 
                 Column(
                     modifier = Modifier.weight(1.0f)
                 ) {
-                    AddImageInformation(
-                        title = stringResource(id = R.string.details_shutter_title),
-                        subtitle = stringResource(id = R.string.details_shutter_default)
-                    )
+                    photoDetails?.exif?.exposure_time?.let {
+                        AddImageInformation(
+                            title = stringResource(id = R.string.details_shutter_title),
+                            subtitle = it
+                        )
+                    }
                 }
             }
         }
@@ -99,10 +110,10 @@ fun DetailsContent(
                 Column(
                     modifier = Modifier.weight(1.0f)
                 ) {
-                    AddImageInformation(
-                        title = stringResource(id = R.string.details_iso_title),
-                        subtitle = stringResource(id = R.string.details_iso_default)
-                    )
+//                    AddImageInformation(
+//                        title = stringResource(id = R.string.details_iso_title),
+//                        subtitle = photoDetails?.exif?.iso
+//                    )
                 }
 
                 Column(
@@ -110,7 +121,7 @@ fun DetailsContent(
                 ) {
                     AddImageInformation(
                         title = stringResource(id = R.string.details_dimensions_title),
-                        subtitle = stringResource(id = R.string.details_dimensions_default)
+                        subtitle = " ${image.height} x ${image.width}"
                     )
                 }
             }
@@ -137,7 +148,7 @@ fun DetailsContent(
                 ) {
                     AddImageInformation(
                         title = stringResource(id = R.string.details_views_title),
-                        subtitle = stringResource(id = R.string.details_views_default)
+                        subtitle = "-"
                     )
                 }
 
@@ -146,8 +157,9 @@ fun DetailsContent(
                 ) {
                     AddImageInformation(
                         title = stringResource(id = R.string.details_downloads_title),
-                        subtitle = stringResource(id = R.string.details_downloads_default)
+                        subtitle = "${photoDetails?.downloads}"
                     )
+
                 }
 
                 Column(
@@ -155,7 +167,7 @@ fun DetailsContent(
                 ) {
                     AddImageInformation(
                         title = stringResource(id = R.string.details_likes_title),
-                        subtitle = stringResource(id = R.string.details_likes_default)
+                        subtitle = "${image.likes}"
                     )
                 }
             }
